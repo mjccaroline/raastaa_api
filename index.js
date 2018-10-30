@@ -54,7 +54,25 @@ app.post('/signup',(req,res)=>{
 });
 
 app.post('/login',(req,res)=> {
+    console.log("body :",req.body);
+    console.log("body_u :",req.body.username);
+    var Username=req.body.username;
+    User.find({username:Username}).then((data)=>{
+        console.log("Result:",data[0].password);
+        if(data[0].password==Username.password){
+            res.send({"username":data[0].username,
+            "name":data[0].name,
+           "success":true});
+        }
+        else{
+            res.send({"success":false});
+        }
 
+    },(error)=>{
+        console.log(error);
+    }).catch((error)=>{
+        res.send(error);
+    });
 });
 
 
