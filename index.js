@@ -14,7 +14,7 @@ mongoose.connect("mongodb://localhost:27017/raastaa");
 ////////////////////Models//////////////////////////////////////////////
 
 var User=mongoose.model('User',{
-    username:{type:String,required:true,trim:true},
+    username:{type:String,required:true,trim:true,unique:true},
     password:{type:String,required:true,trim:true},
     name:{type:String,required:true,minlenght:2,trim:true},   
     email:{type:String,required:true},
@@ -54,12 +54,13 @@ app.post('/signup',(req,res)=>{
 });
 
 app.post('/login',(req,res)=> {
-    console.log("body :",req.body);
-    console.log("body_u :",req.body.username);
+    //console.log("body :",req.body);
+    //console.log("body_u :",req.body.password);
     var Username=req.body.username;
     User.find({username:Username}).then((data)=>{
         console.log("Result:",data[0].password);
-        if(data[0].password==Username.password){
+       // data= data[0].password.toString('utf-8').trim();
+        if(data[0].password==req.body.password){
             res.send({"username":data[0].username,
             "name":data[0].name,
            "success":true});
